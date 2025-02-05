@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchMedia, setPage } from './redux/mediaSlice';
 import { RootState } from './redux/store';
@@ -7,6 +7,8 @@ import './App.scss';
 function App() {
   const dispatch = useDispatch<AppDispatch>();
   const { mediaList, loading, error, currentPage } = useSelector((state: RootState) => state.media)
+
+  const [searchTerm, setSearchTerm] = useState('Pokemon');
 
   useEffect(() => {
     dispatch(fetchMedia({ page: currentPage }));
@@ -23,12 +25,31 @@ function App() {
     }
   };
 
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const handleSearchSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    dispatch(setPage(1));
+    dispatch(fetchMedia({ searchTerm, page: 1 }));
+  };
+
   return (
     <>
       <header>
         <h1>Movies Database</h1>
       </header>
       <main>
+        <form onSubmit={handleSearchSubmit}>
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={handleSearchChange}
+            placeholder="Search for a movie..."
+          />
+          <button type="submit" disabled={!searchTerm.trim()}>Search</button>
+        </form>
         {loading && <p>Loading...</p>}
         {error && <p>Error: {error}</p>}
         <table aria-describedby="movie-table-description">
