@@ -10,19 +10,27 @@ interface ContentState {
   mediaList: Media[];
   loading: boolean;
   error: string | null;
+  currentPage: number;
 }
 
 const initialState: ContentState = {
   mediaList: [],
   loading: false,
   error: null,
+  currentPage: 1,
 };
 
 export const fetchMedia = createAsyncThunk(
   "mediaList/fetchMedia",
-  async (searchTerm: string | undefined = "Pokemon") => {
+  async ({
+    searchTerm = "Pokemon",
+    page = 1,
+  }: {
+    searchTerm?: string;
+    page?: number;
+  }) => {
     const response = await fetch(
-      `https://www.omdbapi.com/?s=${searchTerm}&apikey=624b7f7b`
+      `https://www.omdbapi.com/?s=${searchTerm}&page=${page}&apikey=624b7f7b`
     );
     const data = await response.json();
     return data.Search;
@@ -32,7 +40,11 @@ export const fetchMedia = createAsyncThunk(
 const mediaSlice = createSlice({
   name: "mediaList",
   initialState,
-  reducers: {},
+  reducers: {
+    setPage: (state, action) => {
+      state.currentPage = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchMedia.pending, (state) => {
@@ -49,5 +61,7 @@ const mediaSlice = createSlice({
       });
   },
 });
+
+export const { setPage } = mediaSlice.actions;
 
 export default mediaSlice.reducer;
