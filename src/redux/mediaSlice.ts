@@ -25,12 +25,18 @@ export const fetchMedia = createAsyncThunk(
   async ({
     searchTerm = "Pokemon",
     page = 1,
+    year = "",
+    type = "",
   }: {
     searchTerm?: string;
     page?: number;
+    year?: string;
+    type?: string;
   }) => {
+    const yearQuery = year ? `&y=${year}` : "";
+    const typeQuery = type ? `&type=${type}` : "";
     const response = await fetch(
-      `https://www.omdbapi.com/?s=${searchTerm}&page=${page}&apikey=624b7f7b`
+      `https://www.omdbapi.com/?s=${searchTerm}${yearQuery}${typeQuery}&page=${page}&apikey=624b7f7b`
     );
     const data = await response.json();
     return data.Search;
