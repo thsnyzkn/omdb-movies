@@ -1,5 +1,18 @@
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchMedia } from './redux/mediaSlice';
+import { RootState } from './redux/store';
+import { AppDispatch } from './redux/store';
 import './App.scss';
 function App() {
+  const dispatch = useDispatch<AppDispatch>();
+  const { mediaList, loading, error } = useSelector((state: RootState) => state.media)
+
+  useEffect(() => {
+    dispatch(fetchMedia());
+  }, [dispatch]);
+
+
   return (
     <>
       <header>
@@ -16,11 +29,13 @@ function App() {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Name</td>
-              <td>Year</td>
-              <td>Imdb ID</td>
-            </tr>
+            {mediaList.map((movie) => (
+              <tr key={movie.imdbID}>
+                <td>{movie.Title}</td>
+                <td>{movie.Year}</td>
+                <td>{movie.imdbID}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </main>
