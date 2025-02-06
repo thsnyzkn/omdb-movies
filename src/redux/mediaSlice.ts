@@ -6,8 +6,19 @@ interface Media {
   imdbID: string;
 }
 
+interface MediaDetail {
+  Title: string;
+  Runtime: string;
+  Genre: string;
+  Director: string;
+  Actors: string;
+  imdbRating: string;
+  Plot: string;
+}
+
 interface ContentState {
   mediaList: Media[];
+  mediaDetail: MediaDetail | null;
   loading: boolean;
   error: string | null;
   currentPage: number;
@@ -15,6 +26,7 @@ interface ContentState {
 
 const initialState: ContentState = {
   mediaList: [],
+  mediaDetail: null,
   loading: false,
   error: null,
   currentPage: 1,
@@ -42,6 +54,16 @@ export const fetchMedia = createAsyncThunk(
     return data.Search;
   }
 );
+export const fetchMediaDetail = createAsyncThunk(
+  "mediaList/fetchMediaDetail",
+  async (imdbId: string) => {
+    const response = await fetch(
+      `https://www.omdbapi.com/?i=${imdbId}&apikey=624b7f7b`
+    );
+    const data = await response.json();
+    return data;
+  }
+);
 
 const mediaSlice = createSlice({
   name: "mediaList",
@@ -64,6 +86,18 @@ const mediaSlice = createSlice({
       .addCase(fetchMedia.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Failed to fetch the content.";
+      })
+      .addCase(fetchMediaDetail.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchMediaDetail.fulfilled, (state, action) => {
+        state.loading = false;
+        state.mediaDetail = action.payload;
+      })
+      .addCase(fetchMediaDetail.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Failed to fetch media details.";
       });
   },
 });

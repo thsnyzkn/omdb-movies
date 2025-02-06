@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { NavLink } from "react-router";
 import { fetchMedia, setPage } from './redux/mediaSlice';
 import { RootState } from './redux/store';
 import { AppDispatch } from './redux/store';
 import { useDebounce } from './hooks';
-import './App.scss';
+import './styles/main.scss';
 function App() {
   const dispatch = useDispatch<AppDispatch>();
   const { mediaList, loading, error, currentPage } = useSelector((state: RootState) => state.media)
@@ -94,9 +95,14 @@ function App() {
           <tbody>
             {mediaList?.map((movie) => (
               <tr key={movie.imdbID}>
-                <td>{movie.Title}</td>
+                <NavLink to={`/media/${movie.imdbID}`}>
+                  <td>
+                    {movie.Title}
+                  </td>
+                </NavLink>
                 <td>{movie.Year}</td>
                 <td>{movie.imdbID}</td>
+
               </tr>
             ))}
           </tbody>
@@ -110,7 +116,7 @@ function App() {
             Next
           </button>
         </div>
-      </main>
+      </main >
     </>
   );
 }
