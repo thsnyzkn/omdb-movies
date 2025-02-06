@@ -6,6 +6,8 @@ This project uses the following packages:
 - TypeScript
 - Vite
 - ESLint
+- Redux
+- SASS
 
 ## Installation
 
