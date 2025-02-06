@@ -83,8 +83,8 @@ function App() {
         </form>
         {loading && <p>Loading...</p>}
         {error && <p>Error: {error}</p>}
-        <table aria-describedby="movie-table-description">
-          <caption>Movie Listing</caption>
+        <table aria-describedby="media-table-description">
+          <caption>Content Listing</caption>
           <thead>
             <tr>
               <th scope="col">Movie Title</th>
@@ -95,19 +95,18 @@ function App() {
           <tbody>
             {mediaList?.map((movie) => (
               <tr key={movie.imdbID}>
-                <NavLink to={`/media/${movie.imdbID}`}>
-                  <td>
+                <td>
+                  <NavLink to={`/media/${movie.imdbID}`}>
                     {movie.Title}
-                  </td>
-                </NavLink>
+                  </NavLink>
+                </td>
                 <td>{movie.Year}</td>
                 <td>{movie.imdbID}</td>
-
               </tr>
             ))}
           </tbody>
         </table>
-        <div>
+        <div className='pagination'>
           <button onClick={handlePreviousPage} disabled={currentPage === 1}>
             Previous
           </button>

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { fetchMediaDetail } from "../redux/mediaSlice";
 import { RootState, AppDispatch } from "../redux/store";
+import './MediaDetail.scss'
 
 function MediaDetail() {
   const { imdbId } = useParams<{ imdbId: string }>();
@@ -21,10 +22,11 @@ function MediaDetail() {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <div>
+    <div className="media-detail">
       {mediaDetail && (
         <>
           <h1>{mediaDetail.Title}</h1>
+          <img src={mediaDetail.Poster} alt={`${mediaDetail.Title} Poster`} />
           <p>
             <strong>Duration:</strong> {mediaDetail.Runtime}
           </p>
@@ -44,8 +46,9 @@ function MediaDetail() {
             <strong>Plot:</strong> {mediaDetail.Plot}
           </p>
         </>
-      )}
-    </div>
+      )
+      }
+    </div >
   );
 }
 

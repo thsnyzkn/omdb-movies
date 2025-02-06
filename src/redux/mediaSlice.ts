@@ -14,6 +14,7 @@ interface MediaDetail {
   Actors: string;
   imdbRating: string;
   Plot: string;
+  Poster: string;
 }
 
 interface ContentState {
