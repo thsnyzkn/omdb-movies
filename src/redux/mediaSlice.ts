@@ -1,23 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { Media, MediaDetail } from "../types";
 
-interface Media {
-  Title: string;
-  Year: string;
-  imdbID: string;
-}
-
-interface MediaDetail {
-  Title: string;
-  Runtime: string;
-  Genre: string;
-  Director: string;
-  Actors: string;
-  imdbRating: string;
-  Plot: string;
-  Poster: string;
-}
-
-interface ContentState {
+interface MediaState {
   mediaList: Media[];
   mediaDetail: MediaDetail | null;
   loading: boolean;
@@ -25,7 +9,7 @@ interface ContentState {
   currentPage: number;
 }
 
-const initialState: ContentState = {
+const initialState: MediaState = {
   mediaList: [],
   mediaDetail: null,
   loading: false,

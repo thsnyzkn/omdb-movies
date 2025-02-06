@@ -1,4 +1,4 @@
-# React + TypeScript + Vite Setup
+# Media Content Discovery App
 
 This project uses the following packages:
 
@@ -12,5 +12,11 @@ This project uses the following packages:
 To install the necessary packages, run:
 
 ```bash
-npm install``
+npm install
+```
+
+To run the project, run:
+
+```bash
+npm run dev
 ```
