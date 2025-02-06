@@ -1,6 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { Media, MediaDetail } from "../types";
 
+const API_KEY = import.meta.env.VITE_API_KEY;
+
 interface MediaState {
   mediaList: Media[];
   mediaDetail: MediaDetail | null;
@@ -33,8 +35,9 @@ export const fetchMedia = createAsyncThunk(
     const yearQuery = year ? `&y=${year}` : "";
     const typeQuery = type ? `&type=${type}` : "";
     const response = await fetch(
-      `https://www.omdbapi.com/?s=${searchTerm}${yearQuery}${typeQuery}&page=${page}&apikey=624b7f7b`
+      `https://www.omdbapi.com/?s=${searchTerm}${yearQuery}${typeQuery}&page=${page}&apikey=${API_KEY}`
     );
+
     const data = await response.json();
     return data.Search;
   }
@@ -43,7 +46,7 @@ export const fetchMediaDetail = createAsyncThunk(
   "mediaList/fetchMediaDetail",
   async (imdbId: string) => {
     const response = await fetch(
-      `https://www.omdbapi.com/?i=${imdbId}&apikey=624b7f7b`
+      `https://www.omdbapi.com/?i=${imdbId}&apikey=${API_KEY}`
     );
     const data = await response.json();
     return data;
